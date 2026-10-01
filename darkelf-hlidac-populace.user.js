@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dark Elf - Hlídač populace (veřejná verze)
 // @namespace    https://github.com/goringardevang-alt/darkelf-hlidac-populace
-// @version      5.7
+// @version      5.8
 // @description  Na mapě darkelf.cz označí tvé země, kam se nevejde příští přírůstek obyvatel: červeně 0 volných domů, oranžově méně volných domů než přírůstek. Zapíná se tlačítkem s domem tvé rasy na mapě.
 // @author       Gorin & Claude
 // @match        https://www.darkelf.cz/*
@@ -14,7 +14,7 @@
 // ==/UserScript==
 
 // ─────────────────────────────────────────────────────────────
-// Dark Elf - Hlídač populace v5.7
+// Dark Elf - Hlídač populace v5.8
 //
 // Sestavený soubor — needituj ho, po aktualizaci by se změny ztratily.
 // Chyba nebo nápad: https://github.com/goringardevang-alt/darkelf-hlidac-populace/issues
@@ -39,9 +39,10 @@
         10: 'data:image/png;base64,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',
     };
 
-    const IKONA_VYCHOZI = 10;
+    const IKONA_VYCHOZI = 0;
 
-    const NAZEV = 'Dark Elf - Hlídač populace';    const KLIC_ZAPNUTO = 'de_hlidac_populace_zapnuto';
+    const NAZEV = 'Dark Elf - Hlídač populace';
+    const KLIC_ZAPNUTO = 'de_hlidac_populace_zapnuto';
     const KLIC_SIGNAL = 'de_hlidac_populace_signal';
     const KLIC_ODESLANO = 'de_hlidac_populace_odeslano';
     const KLIC_KOLA = 'de_rounds_remaining';
